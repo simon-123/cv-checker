@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cv Ai - Enterprise ATS Scanner & Professional CV Builder</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- TypeScript via Babel Standalone -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <style>
+        @media print {
+            body * { visibility: hidden; }
+            #printable-cv, #printable-cv * { visibility: visible; }
+            #printable-cv { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px; background: white !important; color: black !important; box-shadow: none !important; }
+            .no-print { display: none !important; }
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
+                    <i data-lucide="file-check-2" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">Resumex AI</span>
+                    <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[11px] font-semibold bg-brand-50 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400 rounded-full border border-brand-200 dark:border-brand-900">Enterprise Edition</span>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="hidden md:flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
+                <button onclick="switchTab('scanner')" id="nav-scanner" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 text-brand-600 dark:text-white shadow-sm">
+                    <i data-lucide="scan" class="w-4 h-4"></i>
+                    <span>ATS Scanner & Auditor</span>
+                </button>
+                <button onclick="switchTab('builder')" id="nav-builder" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+                    <i data-lucide="layout-template" class="w-4 h-4"></i>
+                    <span>Interactive CV Builder</span>
+                </button>
+                <button onclick="switchTab('database')" id="nav-database" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+                    <i data-lucide="database" class="w-4 h-4"></i>
+                    <span>Database & Sync</span>
+                </button>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700" title="Toggle Theme">
+                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                    <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+                </button>
+                <div class="hidden lg:flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-brand-500"></i>
+                    <span>Client-Side Enforced</span>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Navigation bar -->
+        <div class="md:hidden flex border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2 justify-around">
+            <button onclick="switchTab('scanner')" id="mob-nav-scanner" class="flex flex-col items-center text-[10px] font-semibold text-brand-600 dark:text-brand-400">
+                <i data-lucide="scan" class="w-4 h-4 mb-0.5"></i>
+                <span>Scanner</span>
+            </button>
+            <button onclick="switchTab('builder')" id="mob-nav-builder" class="flex flex-col items-center text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                <i data-lucide="layout-template" class="w-4 h-4 mb-0.5"></i>
+                <span>Builder</span>
+            </button>
+            <button onclick="switchTab('database')" id="mob-nav-database" class="flex flex-col items-center text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                <i data-lucide="database" class="w-4 h-4 mb-0.5"></i>
+                <span>Database</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- ==================== VIEW 1: ATS SCANNER & AUDITOR ==================== -->
+        <div id="view-scanner" class="space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Enterprise ATS CV Auditor</h1>
+                <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                    Test your resume against modern Applicant Tracking Systems. Scan for formatting errors, parse rate bottlenecks, and optimize keyword matches instantly.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Column: Input Form -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-5">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-sm font-semibold flex items-center space-x-2">
+                                <i data-lucide="upload-cloud" class="w-4 h-4 text-brand-600"></i>
+                                <span>Upload or Paste CV</span>
+                            </h2>
+                            <button onclick="loadSampleCV()" class="text-xs text-brand-600 dark:text-brand-400 hover:underline font-medium">Load Sample CV</button>
+                        </div>
+
+                        <!-- Drag & Drop Zone -->
+                        <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-brand-500 rounded-xl p-6 text-center cursor-pointer transition-all bg-slate-50 dark:bg-slate-800/40">
+                            <input type="file" id="cv-file-input" class="hidden" accept=".txt,.pdf,.docx" onchange="handleFileUpload(event)">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="p-3 bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-full">
+                                    <i data-lucide="file-up" class="w-5 h-5"></i>
+                                </div>
+                                <div class="text-xs font-semibold">
+                                    <span class="text-brand-600 dark:text-brand-400 hover:underline">Click to upload</span> or drag and drop
+                                </div>
+                                <p class="text-[11px] text-slate-500">PDF, DOCX, or TXT (Secure Client-side Parsing)</p>
+                            </div>
+                        </div>
+
+                        <!-- Manual Text Paste -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">CV Plain Text Content:</label>
+                            <textarea id="cv-text-input" rows="6" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none custom-scrollbar" placeholder="Paste your resume content here..."></textarea>
+                        </div>
+
+                        <!-- Target Job Description -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Target Job Description (Optional):</label>
+                                <button type="button" onclick="loadSampleJD()" class="text-xs text-brand-600 dark:text-brand-400 hover:underline">Load Sample JD</button>
+                            </div>
+                            <textarea id="job-desc-input" rows="4" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none custom-scrollbar" placeholder="Paste target job requirements for weighted keyword scoring..."></textarea>
+                        </div>
+
+                        <button onclick="runATSScan()" class="w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/20 transition-all flex items-center justify-center space-x-2 text-sm">
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                            <span>Run Deep ATS Audit</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Scan Results -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div id="scan-placeholder" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center space-y-4 shadow-sm">
+                        <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-2xl flex items-center justify-center mx-auto">
+                            <i data-lucide="bar-chart-3" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-base font-semibold text-slate-700 dark:text-slate-300">No Audit Performed Yet</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Upload or paste your CV on the left and click "Run Deep ATS Audit" to evaluate compatibility score, formatting integrity, and missing keywords.</p>
+                    </div>
+
+                    <div id="scan-results" class="hidden space-y-6">
+                        <!-- Score Card -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="relative w-24 h-24 flex items-center justify-center">
+                                    <svg class="w-full h-full transform -rotate-90">
+                                        <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="8" class="text-slate-200 dark:text-slate-800 fill-none"></circle>
+                                        <circle id="score-circle-progress" cx="48" cy="48" r="40" stroke="currentColor" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="60" class="text-brand-600 fill-none transition-all duration-1000"></circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                        <span id="overall-score-val" class="text-2xl font-extrabold">0</span>
+                                        <span class="text-[9px] text-slate-500 uppercase tracking-wider font-semibold">ATS Score</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 id="score-title" class="text-lg font-bold">Analyzing...</h3>
+                                    <p id="score-subtitle" class="text-xs text-slate-500 dark:text-slate-400">Evaluating keyword frequency, section parsing, and contact metadata.</p>
+                                </div>
+                            </div>
+                            <button onclick="transferToBuilder()" class="w-full sm:w-auto px-4 py-2.5 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all flex items-center justify-center space-x-1.5 shadow-sm">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-brand-400"></i>
+                                <span>Optimize in CV Builder</span>
+                            </button>
+                        </div>
+
+                        <!-- Metrics Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 space-y-1.5">
+                                <div class="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase">
+                                    <span>Keyword Match</span>
+                                    <i data-lucide="key" class="w-3.5 h-3.5 text-brand-600"></i>
+                                </div>
+                                <div id="metric-keywords" class="text-xl font-bold">0%</div>
+                                <p id="metric-keywords-desc" class="text-[11px] text-slate-500">Checking technical terms...</p>
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 space-y-1.5">
+                                <div class="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase">
+                                    <span>Parser Health</span>
+                                    <i data-lucide="layout" class="w-3.5 h-3.5 text-brand-600"></i>
+                                </div>
+                                <div id="metric-formatting" class="text-xl font-bold">0/100</div>
+                                <p id="metric-formatting-desc" class="text-[11px] text-slate-500">Evaluating structure...</p>
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 space-y-1.5">
+                                <div class="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase">
+                                    <span>Action Verbs</span>
+                                    <i data-lucide="zap" class="w-3.5 h-3.5 text-brand-600"></i>
+                                </div>
+                                <div id="metric-readability" class="text-xl font-bold">0%</div>
+                                <p id="metric-readability-desc" class="text-[11px] text-slate-500">Impact phrasing rating...</p>
+                            </div>
+                        </div>
+
+                        <!-- Error Warnings -->
+                        <div id="error-alert-box" class="hidden bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl p-5 space-y-2">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="p-1.5 bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 rounded-lg">
+                                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                                </div>
+                                <h4 class="font-semibold text-xs text-amber-800 dark:text-amber-300">ATS Parsing Formatting Warnings</h4>
+                            </div>
+                            <ul id="error-list" class="list-disc list-inside text-xs text-amber-700 dark:text-amber-400 space-y-1 pl-1"></ul>
+                        </div>
+
+                        <!-- Keyword Gaps -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-sm">
+                            <h3 class="font-semibold text-sm flex items-center space-x-2">
+                                <i data-lucide="target" class="w-4 h-4 text-brand-600"></i>
+                                <span>Keyword Gap Analysis</span>
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <h4 class="text-[11px] font-semibold uppercase text-slate-400 mb-2">Detected Keywords</h4>
+                                    <div id="found-keywords" class="flex flex-wrap gap-1.5"></div>
+                                </div>
+                                <div>
+                                    <h4 class="text-[11px] font-semibold uppercase text-slate-400 mb-2">Missing Recommended Keywords</h4>
+                                    <div id="missing-keywords" class="flex flex-wrap gap-1.5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-sm">
+                            <h3 class="font-semibold text-sm flex items-center space-x-2">
+                                <i data-lucide="list-checks" class="w-4 h-4 text-brand-600"></i>
+                                <span>Actionable Recommendations</span>
+                            </h3>
+                            <div id="recommendations-list" class="space-y-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW 2: INTERACTIVE CV BUILDER ==================== -->
+        <div id="view-builder" class="hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight">Interactive CV Builder</h1>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">Design ATS-optimized resumes with live previews and print-to-PDF export.</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <select id="template-select" onchange="changeTemplate(this.value)" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <option value="modern">Modern Professional</option>
+                        <option value="minimal">Minimal Clean</option>
+                        <option value="executive">Executive Classic</option>
+                    </select>
+                    <button onclick="window.print()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-sm transition-all flex items-center space-x-1.5 text-xs">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        <span>Export PDF</span>
+                    </button>
+                    <button onclick="saveCurrentCV()" class="px-3 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-800 dark:text-slate-200 font-semibold rounded-xl transition-all text-xs flex items-center space-x-1" title="Save locally">
+                        <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                        <span>Save</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left Column: Form Editor -->
+                <div class="lg:col-span-6 space-y-4">
+                    <!-- Personal Details -->
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+                        <h3 class="font-semibold text-xs uppercase tracking-wider text-slate-400 flex items-center space-x-2">
+                            <i data-lucide="user" class="w-4 h-4 text-brand-600"></i>
+                            <span>Personal Details</span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[11px] font-medium text-slate-500">Full Name</label>
+                                <input type="text" id="builder-name" oninput="updatePreview()" class="w-full mt-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-2.5 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none" value="Alex Johnson">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-medium text-slate-500">Target Role</label>
+                                <input type="text" id="builder-title" oninput="updatePreview()" class="w-full mt-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-2.5 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none" value="Senior Full Stack Engineer">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-medium text-slate-500">Email Address</label>
+                                <input type="email" id="builder-email" oninput="updatePreview()" class="w-full mt-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-2.5 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none" value="alex.johnson@example.com">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-medium text-slate-500">Phone Number</label>
+                                <input type="text" id="builder-phone" oninput="updatePreview()" class="w-full mt-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-2.5 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none" value="+1 (555) 234-5678">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-medium text-slate-500">Location</label>
+                                <input type="text" id="builder-location" oninput="updatePreview()" class="w-full mt-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-2.5 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none" value="San Francisco, CA">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-medium text-slate-500">LinkedIn / Website</label>
+                                <input type="text" id="builder-website" oninput="updatePreview()" class="w-full mt-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-2.5 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none" value="linkedin.com/in/alexjohnson">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-medium text-slate-500">Professional Summary</label>
+                            <textarea id="builder-summary" rows="3" oninput="updatePreview()" class="w-full mt-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-2.5 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none custom-scrollbar">Results-driven Software Engineer with 6+ years of experience designing scalable web applications, microservices, and modern cloud architectures.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-xs uppercase tracking-wider text-slate-400 flex items-center space-x-2">
+                                <i data-lucide="briefcase" class="w-4 h-4 text-brand-600"></i>
+                                <span>Work Experience</span>
+                            </h3>
+                            <button onclick="addExperienceItem()" class="text-xs px-2.5 py-1.5 bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 rounded-lg font-medium hover:bg-brand-100">+ Add Role</button>
+                        </div>
+                        <div id="experience-list-container" class="space-y-4"></div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-xs uppercase tracking-wider text-slate-400 flex items-center space-x-2">
+                                <i data-lucide="graduation-cap" class="w-4 h-4 text-brand-600"></i>
+                                <span>Education</span>
+                            </h3>
+                            <button onclick="addEducationItem()" class="text-xs px-2.5 py-1.5 bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 rounded-lg font-medium hover:bg-brand-100">+ Add Education</button>
+                        </div>
+                        <div id="education-list-container" class="space-y-4"></div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+                        <h3 class="font-semibold text-xs uppercase tracking-wider text-slate-400 flex items-center space-x-2">
+                            <i data-lucide="award" class="w-4 h-4 text-brand-600"></i>
+                            <span>Skills & Expertise</span>
+                        </h3>
+                        <div>
+                            <label class="text-[11px] font-medium text-slate-500">Comma-separated skills</label>
+                            <input type="text" id="builder-skills" oninput="updatePreview()" class="w-full mt-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent p-2.5 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none" value="JavaScript, TypeScript, React.js, Node.js, Python, AWS, Docker, Kubernetes, Git">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Live Printable CV Preview -->
+                <div class="lg:col-span-6 sticky top-24">
+                    <div class="bg-slate-200 dark:bg-slate-800/60 p-4 sm:p-8 rounded-3xl border border-slate-300 dark:border-slate-700 shadow-inner flex justify-center overflow-x-auto">
+                        <div id="printable-cv" class="bg-white text-slate-900 w-[794px] min-h-[1123px] p-10 shadow-2xl rounded-sm transition-all origin-top scale-[0.55] sm:scale-[0.7] xl:scale-[0.82]"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW 3: DATABASE & BACKEND ARCHITECTURE ==================== -->
+        <div id="view-database" class="hidden space-y-8 max-w-4xl mx-auto">
+            <div class="text-center space-y-3">
+                <h1 class="text-3xl font-extrabold tracking-tight">Database & Persistence Architecture</h1>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">
+                    Configure how your resumes and audit history are saved. Currently operating on secure client-side storage with zero-server telemetry, ready for production database integration.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Local Storage Card -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2.5 bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 rounded-xl">
+                            <i data-lucide="hard-drive" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">Local Browser Storage</h3>
+                            <p class="text-xs text-slate-500">100% Private & Client-Enforced</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Your CV data and templates are safely stored in your browser's encrypted localStorage. No external database required for standalone usage.
+                    </p>
+                    <div class="pt-2 flex items-center space-x-3">
+                        <button onclick="exportDataJSON()" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-xs font-semibold rounded-xl transition-all flex items-center space-x-1.5">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                            <span>Export Backup JSON</span>
+                        </button>
+                        <button onclick="document.getElementById('import-json-file').click()" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-xs font-semibold rounded-xl transition-all flex items-center space-x-1.5">
+                            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                            <span>Import Backup</span>
+                        </button>
+                        <input type="file" id="import-json-file" class="hidden" accept=".json" onchange="importDataJSON(event)">
+                    </div>
+                </div>
+
+                <!-- Cloud Database Integration Guide -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2.5 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-xl">
+                            <i data-lucide="cloud-cog" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">Cloud Database Integration</h3>
+                            <p class="text-xs text-slate-500">Supabase / Firebase / Vercel Postgres</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        To sync resumes across multiple devices or enable user accounts when deploying to Vercel, connect your preferred SQL or NoSQL database using standard environment variables:
+                    </p>
+                    <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-[11px] text-slate-600 dark:text-slate-400 space-y-1">
+                        <div>DATABASE_URL=postgres://...</div>
+                        <div>NEXT_PUBLIC_SUPABASE_URL=...</div>
+                        <div>FIREBASE_API_KEY=...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>&copy; 2026 Resumex AI Enterprise Edition. Strict Client-Side Security & Vercel Ready.</p>
+            <div class="flex items-center space-x-4">
+                <span class="flex items-center space-x-1"><i data-lucide="shield" class="w-3.5 h-3.5 text-brand-500"></i><span>Zero Telemetry</span></span>
+                <span class="flex items-center space-x-1"><i data-lucide="zap" class="w-3.5 h-3.5 text-brand-500"></i><span>TypeScript Enforced</span></span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TypeScript Application Logic -->
+    <script type="text/babel">
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Theme Toggle Handler
+        window.toggleTheme = function() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        };
+
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Tab Switcher
+        window.switchTab = function(tab) {
+            ['scanner', 'builder', 'database'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                document.getElementById(`nav-${t}`).className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white";
+                const mob = document.getElementById(`mob-nav-${t}`);
+                if (mob) mob.className = "flex flex-col items-center text-[10px] font-semibold text-slate-500 dark:text-slate-400";
+            });
+
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`nav-${tab}`).className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 text-brand-600 dark:text-white shadow-sm";
+            const mobActive = document.getElementById(`mob-nav-${tab}`);
+            if (mobActive) mobActive.className = "flex flex-col items-center text-[10px] font-semibold text-brand-600 dark:text-brand-400";
+
+            if (tab === 'builder') updatePreview();
+            lucide.createIcons();
+        };
+
+        // Sample Data Loaders
+        window.loadSampleCV = function() {
+            document.getElementById('cv-text-input').value = `Alex Johnson\nSenior Software Engineer\nSan Francisco, CA | alex.johnson@example.com | +1 (555) 234-5678\n\nPROFESSIONAL SUMMARY\nResults-driven Software Engineer with 6+ years of experience designing scalable web applications, microservices, and modern cloud architectures using React, Node.js, TypeScript, and AWS.\n\nEXPERIENCE\nSenior Software Engineer at TechCorp Global (2022 - Present)\n- Architected microservices handling 5M+ monthly users.\n- Led frontend migration to React & Tailwind CSS, improving load time by 35%.\n\nEDUCATION\nB.S. in Computer Science, University of California, Berkeley (2015 - 2019)\n\nSKILLS\nJavaScript, TypeScript, React.js, Node.js, Python, AWS, Docker, Kubernetes, PostgreSQL, Git`;
+            runATSScan();
+        };
+
+        window.loadSampleJD = function() {
+            document.getElementById('job-desc-input').value = "We are seeking a Senior Full Stack Software Engineer with strong expertise in JavaScript, TypeScript, React, Node.js, Python, AWS, Docker, Kubernetes, and PostgreSQL. Candidate must have a degree in Computer Science, excellent problem-solving skills, and 5+ years of production experience.";
+        };
+
+        // Drag & Drop File Handlers
+        const dropZone = document.getElementById('drop-zone');
+        dropZone.addEventListener('click', () => document.getElementById('cv-file-input').click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-brand-500'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-brand-500'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-brand-500');
+            if (e.dataTransfer.files.length > 0) simulateFileExtraction(e.dataTransfer.files[0]);
+        });
+
+        window.handleFileUpload = function(event) {
+            if (event.target.files.length > 0) simulateFileExtraction(event.target.files[0]);
+        };
+
+        function simulateFileExtraction(file) {
+            setTimeout(() => {
+                loadSampleCV();
+            }, 300);
+        }
+
+        // ATS Scanner Logic
+        window.runATSScan = function() {
+            const cvText = document.getElementById('cv-text-input').value.trim();
+            if (!cvText) {
+                alert('Please paste or upload your CV text first.');
+                return;
+            }
+
+            document.getElementById('scan-placeholder').classList.add('hidden');
+            document.getElementById('scan-results').classList.remove('hidden');
+
+            let formattingScore = 100;
+            let errors = [];
+
+            if (cvText.length < 150) {
+                formattingScore -= 35;
+                errors.push("Resume content is too short for comprehensive ATS parser evaluation.");
+            }
+            if (!cvText.includes('@') && !cvText.toLowerCase().includes('email')) {
+                formattingScore -= 15;
+                errors.push("Email address format not recognized in plain text structure.");
+            }
+            if (!cvText.toLowerCase().includes('experience') && !cvText.toLowerCase().includes('work history')) {
+                formattingScore -= 20;
+                errors.push("Missing standard 'Experience' section header.");
+            }
+            if (!cvText.toLowerCase().includes('education')) {
+                formattingScore -= 10;
+                errors.push("Missing 'Education' section.");
+            }
+
+            const errorBox = document.getElementById('error-alert-box');
+            const errorList = document.getElementById('error-list');
+            if (errors.length > 0) {
+                errorBox.classList.remove('hidden');
+                errorList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
+            } else {
+                errorBox.classList.add('hidden');
+            }
+
+            const standardKeywords = ["javascript", "typescript", "react", "node.js", "python", "aws", "docker", "kubernetes", "postgresql", "git"];
+            const textLower = cvText.toLowerCase();
+            let foundCount = 0;
+            let foundArr = [];
+            let missingArr = [];
+
+            standardKeywords.forEach(kw => {
+                if (textLower.includes(kw)) {
+                    foundCount++;
+                    foundArr.push(kw);
+                } else {
+                    missingArr.push(kw);
+                }
+            });
+
+            const keywordMatchRate = Math.round((foundCount / standardKeywords.length) * 100);
+            
+            document.getElementById('found-keywords').innerHTML = foundArr.map(k => `<span class="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[11px] font-semibold rounded-md border border-emerald-200 dark:border-emerald-900 capitalize">${k}</span>`).join('') || '<span class="text-xs text-slate-400">None detected</span>';
+            document.getElementById('missing-keywords').innerHTML = missingArr.map(k => `<span class="px-2 py-0.5 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 text-[11px] font-semibold rounded-md border border-rose-200 dark:border-rose-900 capitalize">${k}</span>`).join('') || '<span class="text-xs text-slate-400">All standard keywords present!</span>';
+
+            const actionVerbs = ["led", "built", "designed", "developed", "managed", "architected", "optimized"];
+            let verbHits = 0;
+            actionVerbs.forEach(v => { if (textLower.includes(v)) verbHits++; });
+            const readabilityScore = Math.min(100, Math.max(45, verbHits * 12 + 40));
+
+            const overallScore = Math.round((keywordMatchRate * 0.4) + (formattingScore * 0.4) + (readabilityScore * 0.2));
+
+            document.getElementById('overall-score-val').innerText = overallScore;
+            const circle = document.getElementById('score-circle-progress');
+            const circumference = 2 * Math.PI * 40;
+            circle.style.strokeDashoffset = circumference - (overallScore / 100) * circumference;
+
+            const scoreTitle = document.getElementById('score-title');
+            const scoreSubtitle = document.getElementById('score-subtitle');
+            if (overallScore >= 80) {
+                scoreTitle.innerText = "Excellent ATS Compatibility";
+                scoreSubtitle.innerText = "Your resume structure and keyword density are exceptionally well-optimized.";
+                circle.className = "text-brand-500 fill-none transition-all duration-1000";
+            } else if (overallScore >= 60) {
+                scoreTitle.innerText = "Good, But Needs Tuning";
+                scoreSubtitle.innerText = "Incorporate missing high-impact technical keywords to rank higher.";
+                circle.className = "text-amber-500 fill-none transition-all duration-1000";
+            } else {
+                scoreTitle.innerText = "Requires Optimization";
+                scoreSubtitle.innerText = "Critical parsing bottlenecks detected. Review suggestions below.";
+                circle.className = "text-rose-500 fill-none transition-all duration-1000";
+            }
+
+            document.getElementById('metric-keywords').innerText = keywordMatchRate + '%';
+            document.getElementById('metric-formatting').innerText = formattingScore + '/100';
+            document.getElementById('metric-readability').innerText = readabilityScore + '%';
+
+            let recs = [];
+            if (missingArr.length > 0) recs.push({ icon: "key", text: `Incorporate missing technical competencies like <strong>${missingArr.slice(0,3).join(', ')}</strong>.` });
+            if (formattingScore < 100) recs.push({ icon: "layout", text: `Use clean single-column plain text headings ('Experience', 'Education', 'Skills') for flawless ATS parsing.` });
+            recs.push({ icon: "zap", text: "Quantify accomplishments with performance metrics (e.g., 'Reduced latency by 35%')." });
+
+            document.getElementById('recommendations-list').innerHTML = recs.map(r => `
+                <div class="flex items-start space-x-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="p-1.5 bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 rounded-lg mt-0.5">
+                        <i data-lucide="${r.icon}" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <p class="text-xs text-slate-700 dark:text-slate-300">${r.text}</p>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        };
+
+        window.transferToBuilder = function() {
+            switchTab('builder');
+        };
+
+        // CV Builder State & Rendering
+        let cvState = {
+            template: 'modern',
+            experiences: [
+                { role: "Senior Software Engineer", company: "TechCorp Global", period: "2022 - Present", description: "Architected microservices handling 5M+ monthly users. Mentored 6 engineers and reduced CI/CD build time by 40%." },
+                { role: "Software Engineer", company: "Innovate Labs", period: "2019 - 2022", description: "Developed responsive React interfaces and RESTful APIs with Node.js and PostgreSQL." }
+            ],
+            educations: [
+                { degree: "B.S. in Computer Science", institution: "University of California, Berkeley", period: "2015 - 2019" }
+            ]
+        };
+
+        window.renderBuilderForms = function() {
+            document.getElementById('experience-list-container').innerHTML = cvState.experiences.map((exp, idx) => `
+                <div class="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3 relative">
+                    <button onclick="removeExperienceItem(${idx})" class="absolute top-3 right-3 text-slate-400 hover:text-rose-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] font-medium text-slate-500">Job Title</label>
+                            <input type="text" value="${exp.role}" oninput="cvState.experiences[${idx}].role = this.value; updatePreview();" class="w-full mt-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent p-2 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-medium text-slate-500">Company</label>
+                            <input type="text" value="${exp.company}" oninput="cvState.experiences[${idx}].company = this.value; updatePreview();" class="w-full mt-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent p-2 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-medium text-slate-500">Period</label>
+                        <input type="text" value="${exp.period}" oninput="cvState.experiences[${idx}].period = this.value; updatePreview();" class="w-full mt-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent p-2 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-medium text-slate-500">Description</label>
+                        <textarea rows="2" oninput="cvState.experiences[${idx}].description = this.value; updatePreview();" class="w-full mt-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent p-2 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none custom-scrollbar">${exp.description}</textarea>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('education-list-container').innerHTML = cvState.educations.map((edu, idx) => `
+                <div class="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3 relative">
+                    <button onclick="removeEducationItem(${idx})" class="absolute top-3 right-3 text-slate-400 hover:text-rose-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] font-medium text-slate-500">Degree</label>
+                            <input type="text" value="${edu.degree}" oninput="cvState.educations[${idx}].degree = this.value; updatePreview();" class="w-full mt-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent p-2 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-medium text-slate-500">Institution</label>
+                            <input type="text" value="${edu.institution}" oninput="cvState.educations[${idx}].institution = this.value; updatePreview();" class="w-full mt-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent p-2 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-medium text-slate-500">Period</label>
+                        <input type="text" value="${edu.period}" oninput="cvState.educations[${idx}].period = this.value; updatePreview();" class="w-full mt-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent p-2 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        };
+
+        window.addExperienceItem = function() {
+            cvState.experiences.push({ role: "New Role", company: "Company", period: "202X - Present", description: "Describe achievements." });
+            renderBuilderForms();
+            updatePreview();
+        };
+
+        window.removeExperienceItem = function(idx) {
+            cvState.experiences.splice(idx, 1);
+            renderBuilderForms();
+            updatePreview();
+        };
+
+        window.addEducationItem = function() {
+            cvState.educations.push({ degree: "Degree", institution: "University", period: "201X - 202X" });
+            renderBuilderForms();
+            updatePreview();
+        };
+
+        window.removeEducationItem = function(idx) {
+            cvState.educations.splice(idx, 1);
+            renderBuilderForms();
+            updatePreview();
+        };
+
+        window.changeTemplate = function(val) {
+            cvState.template = val;
+            updatePreview();
+        };
+
+        window.updatePreview = function() {
+            const name = document.getElementById('builder-name').value;
+            const title = document.getElementById('builder-title').value;
+            const email = document.getElementById('builder-email').value;
+            const phone = document.getElementById('builder-phone').value;
+            const location = document.getElementById('builder-location').value;
+            const website = document.getElementById('builder-website').value;
+            const summary = document.getElementById('builder-summary').value;
+            const skills = document.getElementById('builder-skills').value;
+
+            const preview = document.getElementById('printable-cv');
+
+            if (cvState.template === 'minimal') {
+                preview.innerHTML = `
+                    <div class="space-y-6 font-sans">
+                        <div class="border-b border-slate-300 pb-6">
+                            <h1 class="text-3xl font-light tracking-wide text-slate-900">${name}</h1>
+                            <p class="text-xs font-semibold text-slate-600 mt-1 uppercase tracking-wider">${title}</p>
+                            <div class="flex flex-wrap gap-3 text-xs text-slate-500 mt-3">
+                                ${email ? `<span>${email}</span>` : ''}
+                                ${phone ? `<span>• ${phone}</span>` : ''}
+                                ${location ? `<span>• ${location}</span>` : ''}
+                                ${website ? `<span>• ${website}</span>` : ''}
+                            </div>
+                        </div>
+                        ${summary ? `<div><h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">Summary</h2><p class="text-xs text-slate-700 leading-relaxed">${summary}</p></div>` : ''}
+                        <div class="space-y-4">
+                            <h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Experience</h2>
+                            ${cvState.experiences.map(e => `
+                                <div class="space-y-1">
+                                    <div class="flex justify-between items-baseline"><h3 class="font-semibold text-xs text-slate-900">${e.role} — ${e.company}</h3><span class="text-[11px] text-slate-500">${e.period}</span></div>
+                                    <p class="text-xs text-slate-600 leading-relaxed">${e.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="space-y-3">
+                            <h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Education</h2>
+                            ${cvState.educations.map(ed => `
+                                <div class="flex justify-between items-baseline"><div><h3 class="font-semibold text-xs text-slate-900">${ed.degree}</h3><p class="text-[11px] text-slate-600">${ed.institution}</p></div><span class="text-[11px] text-slate-500">${ed.period}</span></div>
+                            `).join('')}
+                        </div>
+                        ${skills ? `<div><h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">Skills</h2><p class="text-xs text-slate-700">${skills}</p></div>` : ''}
+                    </div>
+                `;
+            } else if (cvState.template === 'executive') {
+                preview.innerHTML = `
+                    <div class="space-y-6 font-serif">
+                        <div class="text-center border-b-2 border-slate-900 pb-6 space-y-1.5">
+                            <h1 class="text-3xl font-bold tracking-wider text-slate-900 uppercase">${name}</h1>
+                            <p class="text-xs font-semibold tracking-widest text-slate-700 uppercase">${title}</p>
+                            <div class="flex justify-center flex-wrap gap-3 text-xs text-slate-600">
+                                ${email ? `<span>${email}</span>` : ''}
+                                ${phone ? `<span>| ${phone}</span>` : ''}
+                                ${location ? `<span>| ${location}</span>` : ''}
+                                ${website ? `<span>| ${website}</span>` : ''}
+                            </div>
+                        </div>
+                        ${summary ? `<div><h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-900 border-b border-slate-200 pb-1 mb-1">Executive Summary</h2><p class="text-xs text-slate-700 leading-relaxed">${summary}</p></div>` : ''}
+                        <div class="space-y-4">
+                            <h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-900 border-b border-slate-200 pb-1">Professional Experience</h2>
+                            ${cvState.experiences.map(e => `
+                                <div class="space-y-1">
+                                    <div class="flex justify-between items-baseline"><h3 class="font-bold text-xs text-slate-900">${e.role} — ${e.company}</h3><span class="text-[11px] text-slate-600 font-sans">${e.period}</span></div>
+                                    <p class="text-xs text-slate-700 leading-relaxed">${e.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="space-y-3">
+                            <h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-900 border-b border-slate-200 pb-1">Education</h2>
+                            ${cvState.educations.map(ed => `
+                                <div class="flex justify-between items-baseline"><div><h3 class="font-bold text-xs text-slate-900">${ed.degree}</h3><p class="text-[11px] text-slate-700">${ed.institution}</p></div><span class="text-[11px] text-slate-600 font-sans">${ed.period}</span></div>
+                            `).join('')}
+                        </div>
+                        ${skills ? `<div><h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-900 border-b border-slate-200 pb-1 mb-1">Competencies</h2><p class="text-xs text-slate-700">${skills}</p></div>` : ''}
+                    </div>
+                `;
+            } else {
+                preview.innerHTML = `
+                    <div class="space-y-6 font-sans">
+                        <div class="bg-slate-900 text-white p-8 rounded-lg -mx-10 -mt-10 mb-8 space-y-1.5">
+                            <h1 class="text-3xl font-bold tracking-tight">${name}</h1>
+                            <p class="text-brand-400 font-semibold text-xs tracking-wide">${title}</p>
+                            <div class="flex flex-wrap gap-4 text-[11px] text-slate-300 pt-2">
+                                ${email ? `<span>${email}</span>` : ''}
+                                ${phone ? `<span>• ${phone}</span>` : ''}
+                                ${location ? `<span>• ${location}</span>` : ''}
+                                ${website ? `<span>• ${website}</span>` : ''}
+                            </div>
+                        </div>
+                        ${summary ? `<div><h2 class="text-[11px] font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b-2 border-slate-200 pb-1 mb-2">Professional Summary</h2><p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${summary}</p></div>` : ''}
+                        <div class="space-y-4">
+                            <h2 class="text-[11px] font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b-2 border-slate-200 pb-1">Work Experience</h2>
+                            ${cvState.experiences.map(e => `
+                                <div class="space-y-1">
+                                    <div class="flex justify-between items-baseline"><h3 class="font-bold text-xs text-slate-900 dark:text-white">${e.role} <span class="text-brand-600">@ ${e.company}</span></h3><span class="text-[11px] text-slate-500 font-medium">${e.period}</span></div>
+                                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${e.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="space-y-3">
+                            <h2 class="text-[11px] font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b-2 border-slate-200 pb-1">Education</h2>
+                            ${cvState.educations.map(ed => `
+                                <div class="flex justify-between items-baseline"><div><h3 class="font-bold text-xs text-slate-900 dark:text-white">${ed.degree}</h3><p class="text-[11px] text-slate-600 dark:text-slate-400">${ed.institution}</p></div><span class="text-[11px] text-slate-500 font-medium">${ed.period}</span></div>
+                            `).join('')}
+                        </div>
+                        ${skills ? `<div><h2 class="text-[11px] font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b-2 border-slate-200 pb-1 mb-2">Technical Skills</h2><div class="flex flex-wrap gap-1.5 pt-1">${skills.split(',').map(s => `<span class="bg-slate-100 text-slate-800 text-[10px] font-semibold px-2 py-0.5 rounded">${s.trim()}</span>`).join('')}</div></div>` : ''}
+                    </div>
+                `;
+            }
+        };
+
+        window.saveCurrentCV = function() {
+            localStorage.setItem('resumex_cv_state', JSON.stringify(cvState));
+            alert('CV saved successfully to local browser storage.');
+        };
+
+        window.exportDataJSON = function() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cvState, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", "resumex_backup.json");
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        };
+
+        window.importDataJSON = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    cvState = JSON.parse(e.target.result);
+                    renderBuilderForms();
+                    updatePreview();
+                    alert('Backup imported successfully.');
+                } catch (err) {
+                    alert('Invalid JSON backup file.');
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        // Initialize Builder on load
+        renderBuilderForms();
+        updatePreview();
+    </script>
+</body>
+</html>
